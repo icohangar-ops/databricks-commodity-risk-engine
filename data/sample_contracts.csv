@@ -1,0 +1,11 @@
+contract_id,contract_type,commodity,notional_volume_tonnes,strike_price_usd,current_price_usd,contract_date,maturity_date,counterparty,currency,fx_rate,margin_pct,status
+CT001,physical,Ni,5000.00,16500.00,16850.00,2024-01-15,2024-06-30,Trafigura,USD,1.00,0.12,active
+CT002,forward,Co,500.00,32000.00,33500.00,2024-01-15,2024-09-30,Glencore,USD,1.00,0.15,active
+CT003,future,Li,200.00,120000.00,125000.00,2024-01-15,2024-12-31,CME Group,USD,1.00,0.18,active
+CT004,swap,MHP,1000.00,38000.00,38500.00,2024-01-15,2024-07-31,CMOC Group,USD,1.00,0.14,active
+CT005,physical,Cu,10000.00,8500.00,8620.00,2024-01-15,2024-04-30,BHP Billiton,AUD,0.65,0.08,active
+CT006,future,Fe,50000.00,130.00,132.50,2024-01-15,2024-03-31,Vale,BRL,0.20,0.10,active
+CT007,forward,Ni,3000.00,17000.00,16850.00,2024-01-16,2024-08-15,Sumitomo,JPY,0.0067,0.12,active
+CT008,physical,Co,800.00,34000.00,33500.00,2024-01-16,2024-10-31,Eramet,EUR,0.92,0.15,active
+CT009,swap,Li,150.00,130000.00,125000.00,2024-01-17,2025-01-17,Pilbara Minerals,AUD,0.65,0.18,active
+CT010,future,MHP,750.00,39000.00,38500.00,2024-01-17,2024-09-17,JX Nippon,JPY,0.0067,0.14,active
