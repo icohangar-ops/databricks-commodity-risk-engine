@@ -1,11 +1,32 @@
 # Databricks notebook source
-# SQL Dashboard - Risk Analytics
+# Dashboard Queries for Risk Analytics (Serverless Compatible)
 from pyspark.sql.functions import *
 CATALOG = "workspace"
-print("--- Top Contracts by Risk ---")
-spark.sql(f"SELECT contract_id,commodity,notional_usd,worst_case_usd,risk_level FROM {CATALOG}.risk_gold.contract_risk ORDER BY worst_case_usd DESC").show(truncate=False)
-print("--- VaR by Commodity ---")
-spark.sql(f"SELECT commodity_upper,avg_price,var_95_pct,cvar_99_pct FROM {CATALOG}.risk_gold.value_at_risk ORDER BY var_95_pct DESC").show(truncate=False)
-print("--- Portfolio Summary ---")
-spark.sql(f"SELECT commodity,COUNT(*) as contracts,SUM(notional_usd) as total,AVG(margin_pct) as avg_margin FROM {CATALOG}.risk_silver.contracts GROUP BY commodity ORDER BY total DESC").show(truncate=False)
-print("Dashboard queries ready")
+print("Dashboard SQL - Risk Analytics")
+
+try:
+    print("--- Top Contracts by Risk ---")
+    df = spark.read.table(f"{CATALOG}.risk_gold.contract_risk")
+    df.select("contract_id", "commodity", "notional_usd", "worst_case_usd", "risk_level").orderBy(desc("worst_case_usd")).show(truncate=False)
+except Exception as e:
+    print(f"Error reading contract_risk: {e}")
+
+try:
+    print("--- VaR by Commodity ---")
+    df2 = spark.read.table(f"{CATALOG}.risk_gold.value_at_risk")
+    df2.select("commodity_upper", "avg_price", "var_95_pct", "cvar_99_pct").orderBy(desc("var_95_pct")).show(truncate=False)
+except Exception as e:
+    print(f"Error reading value_at_risk: {e}")
+
+try:
+    print("--- Portfolio Summary ---")
+    df3 = spark.read.table(f"{CATALOG}.risk_silver.contracts")
+    df3.groupBy("commodity").agg(
+        count("*").alias("contracts"),
+        sum("notional_usd").alias("total"),
+        avg("margin_pct").alias("avg_margin")
+    ).orderBy(desc("total")).show(truncate=False)
+except Exception as e:
+    print(f"Error reading contracts: {e}")
+
+print("Dashboard queries complete")
