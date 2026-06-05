@@ -29,9 +29,9 @@ class RiskConfig:
     gold_margin_table: str = "margin_impacts"
     gold_exposure_table: str = "exposure_summary"
 
-    # Workspace
-    workspace_url: str = "https://REDACTED_DATABRICKS_WORKSPACE"
-    workspace_id: str = "REDACTED_DATABRICKS_WORKSPACE_ID"
+    # Workspace — set via DATABRICKS_WORKSPACE_URL and DATABRICKS_WORKSPACE_ID env vars
+    workspace_url: str = ""
+    workspace_id: str = ""
 
     # VaR parameters
     var_confidence: float = 0.99
