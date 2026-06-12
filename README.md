@@ -176,7 +176,7 @@ All notebooks are designed for **Databricks Serverless compute** (Spark Connect)
 ## Quick Start
 
 ```bash
-git clone https://github.com/Cubiczan/databricks-commodity-risk-engine.git
+git clone https://github.com/icohangar-ops/databricks-commodity-risk-engine.git
 cd databricks-commodity-risk-engine
 ```
 
@@ -263,7 +263,7 @@ databricks-commodity-risk-engine/
 
 **Shyam Desigan**
 - Email: sam@cubiczan.com
-- GitHub: [Cubiczan](https://github.com/Cubiczan)
+- GitHub: [Cubiczan](https://github.com/icohangar-ops)
 - Specialization: Commodity Risk, Quantitative Analytics, Cloud Architecture
 
 ## License
