@@ -6,6 +6,7 @@ Implements parametric (variance-covariance) and historical simulation methods.
 from __future__ import annotations
 
 import math
+from datetime import date
 from typing import Optional
 
 import numpy as np
@@ -69,7 +70,9 @@ class VaRCalculator:
 
         # Mean and covariance
         mean_returns = np.mean(returns, axis=0)
-        cov_matrix = np.cov(returns, rowvar=False)
+        # np.cov collapses to a 0-d/1-d array for a single asset; force 2-D so the
+        # quadratic form `weights @ cov @ weights` is always well defined.
+        cov_matrix = np.atleast_2d(np.cov(returns, rowvar=False))
 
         # Portfolio mean and std
         port_mean = float(weights @ mean_returns)
@@ -99,7 +102,7 @@ class VaRCalculator:
             method="parametric",
             confidence_level=self.confidence,
             time_horizon_days=h,
-            calculation_date=calculation_date or "",
+            calculation_date=calculation_date or date.today().isoformat(),
             var_usd=round(abs(var_usd), 2),
             cvar_usd=round(abs(cvar_usd), 2),
             portfolio_value_usd=self.portfolio_value,
@@ -166,7 +169,7 @@ class VaRCalculator:
             method="historical_simulation",
             confidence_level=self.confidence,
             time_horizon_days=h,
-            calculation_date=calculation_date or "",
+            calculation_date=calculation_date or date.today().isoformat(),
             var_usd=round(abs(var_usd), 2),
             cvar_usd=round(abs(cvar_usd), 2),
             portfolio_value_usd=self.portfolio_value,
