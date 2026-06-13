@@ -78,7 +78,7 @@ This project is fully wired into a live Databricks workspace at [REDACTED_DATABR
 ```
 Job: Commodity Risk Engine Pipeline (ID: 905902266867758)
 Schedule: 0 0/15 6-20 * * ? (Every 15 min, 6AM-8PM ET, PAUSED)
-Git Source: github.com/Cubiczan/databricks-commodity-risk-engine (main)
+Git Source: github.com/icohangar-ops/databricks-commodity-risk-engine (main)
 
 Tasks:
   bronze_ingest (00) ──▶ silver_transform (01) ──▶ gold_risk_metrics (02)
