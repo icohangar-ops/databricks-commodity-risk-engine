@@ -8,6 +8,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
+from cubiczan_resilience import resilient
 
 CATALOG = "workspace"
 mlflow.set_tracking_uri("databricks")
@@ -22,7 +23,8 @@ y = df["margin_pct"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-try:
+@resilient(timeout=120.0, max_attempts=3)
+def train_and_log():
     with mlflow.start_run(run_name="sklearn_lr_v1"):
         lr = LinearRegression()
         lr.fit(X_train, y_train)
@@ -37,7 +39,11 @@ try:
         mlflow.log_metric("r2", float(r2))
         mlflow.sklearn.log_model(lr, "model")
         print(f"RMSE: {rmse:.4f}, R2: {r2:.4f}")
-except Exception as e:
-    print(f"MLflow error: {e}")
+        return rmse, r2
+
+
+# Failures now propagate after retries are exhausted instead of being
+# swallowed by a bare except (audit gap: silent notebook failures).
+train_and_log()
 
 print("MLflow training complete")
