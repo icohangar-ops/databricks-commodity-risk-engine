@@ -15,7 +15,7 @@ print("value_at_risk:")
 df_var.select("commodity_upper","avg_price","var_95_pct").show(truncate=False)
 
 df_c = spark.read.table(f"{CATALOG}.risk_silver.contracts")
-df_impact = df_c.join(df_var.select(col("commodity_upper").alias("commodity"),col("var_95_pct").alias("pv95")),"commodity").withColumn("worst_case_usd",round(col("quantity_mt")*col("pv95"),2)).withColumn("risk_level",when(col("worst_case_usd")>1000000,"High").when(col("worst_case_usd")>100000,"Medium").otherwise("Low"))
+df_impact = df_c.join(df_var.select("commodity_upper",col("var_95_pct").alias("pv95")),upper(col("commodity"))==col("commodity_upper")).drop("commodity_upper").withColumn("worst_case_usd",round(col("quantity_mt")*col("pv95"),2)).withColumn("risk_level",when(col("worst_case_usd")>1000000,"High").when(col("worst_case_usd")>100000,"Medium").otherwise("Low"))
 df_impact.writeTo(f"{CATALOG}.risk_gold.contract_risk").using("delta").createOrReplace()
 print("contract_risk:")
 df_impact.select("contract_id","commodity","notional_usd","worst_case_usd","risk_level").orderBy(desc("worst_case_usd")).show(truncate=False)
